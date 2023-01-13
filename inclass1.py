@@ -7,14 +7,19 @@ def print_stat(listNum, file_name):
 
 def main(argv):
     listSum = []
+    file_count = 0
     for file_name in argv:
-        with open(file_name) as file:
-            listNum = [int(line.rstrip()) for line in file if line.rstrip().isnumeric()]
-        if listNum:
-            print_stat(listNum, file_name)
-        listSum += listNum
-        
-    if listSum:
+        try:
+            with open(file_name) as file:
+                listNum = [int(line.rstrip()) for line in file if line.rstrip().isnumeric()]
+            if listNum:
+                print_stat(listNum, file_name)
+            listSum += listNum
+            file_count += 1
+        except FileNotFoundError:
+            continue
+
+    if listSum and file_count > 1:
         print_stat(listSum, "combined")
 
 if __name__ == "__main__":
